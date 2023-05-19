@@ -152,7 +152,13 @@ export function LinearPoolsList({}: Props) {
                     />
                 </div>
             </Typography>
-            <LinearPoolModal selectedPool={selectedPool} setSelectedPool={setSelectedPool} />
+            <LinearPoolModal
+                selectedPool={selectedPool}
+                setSelectedPool={setSelectedPool}
+                refetchPoolData={async () => {
+                    await data.refetch();
+                }}
+            />
         </div>
     );
 }

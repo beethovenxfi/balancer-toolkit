@@ -15,16 +15,16 @@ import { useUserTokenAllowance } from '../../../lib/hooks/useUserTokenAllowance'
 interface Props {
     selectedPool: RawLinearPoolExtended | null;
     setSelectedPool: (pool: RawLinearPoolExtended | null) => void;
+    refetchPoolData: () => Promise<void>;
 }
 
-export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
+export function LinearPoolModal({ selectedPool, setSelectedPool, refetchPoolData }: Props) {
     const networkConfig = useNetworkConfig();
     const rebalancerAddress = linearPoolRebalancers[selectedPool?.address || ''] || null;
     const vaultAddress = networkConfig?.balancer?.vault || '';
     const { address: account } = useAccount();
 
     const mainToken = selectedPool?.tokens[selectedPool.mainIndex] || null;
-    useUserTokenAllowance(mainToken);
 
     const { writeAsync: rebalance, isLoading: isRebalancing, prepare: reblaancePrepare } = useRebalance(selectedPool);
     const {
@@ -129,7 +129,7 @@ export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
                                 onClick={async () => {
                                     if (rebalance) {
                                         await rebalance();
-                                        // reload pool balances
+                                        await refetchPoolData();
                                     }
                                 }}
                             >
@@ -160,6 +160,7 @@ export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
                                     onClick={async () => {
                                         if (rebalanceWithExtraMain) {
                                             await rebalanceWithExtraMain();
+                                            await refetchPoolData();
                                         }
                                     }}
                                 >
