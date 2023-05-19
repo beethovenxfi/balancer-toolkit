@@ -84,4 +84,24 @@ BalancerNetworkDefinitions = {
             url: 'https://arbiscan.io',
         },
     },
+    '137': {
+        balancer: {
+            subgraphUrl: 'https://balancer-polygon-v2.stellate.balancer.fi',
+            sorQueriesAddress: '0x1814a3b3e4362caf4eb54cd85b82d39bd7b34e41',
+            vault: '0xba12222222228d8ba445958a75a0704d566bf2c8',
+        },
+        multicall: '0x275617327c958bD06b5D6b871E7f491D76113dd8',
+        eth: {
+            address: '0x0000000000000000000000000000000000001010',
+            addressFormatted: '0x0000000000000000000000000000000000001010',
+            symbol: 'MATIC',
+            name: 'Matic',
+            decimals: 18,
+            iconUrl: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+        },
+        etherscan: {
+            name: 'Polygon Scan',
+            url: 'https://polygonscan.com',
+        },
+    },
 };

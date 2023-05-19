@@ -10,6 +10,7 @@ import { useAllowances } from '../../../lib/hooks/useAllowances';
 import { useAccount } from 'wagmi';
 import { useRebalance } from '../hooks/useRebalance';
 import { useRebalanceWithExtraMain } from '../hooks/useRebalanceWithExtraMain';
+import { useUserTokenAllowance } from '../../../lib/hooks/useUserTokenAllowance';
 
 interface Props {
     selectedPool: RawLinearPoolExtended | null;
@@ -23,6 +24,7 @@ export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
     const { address: account } = useAccount();
 
     const mainToken = selectedPool?.tokens[selectedPool.mainIndex] || null;
+    useUserTokenAllowance(mainToken);
 
     const { writeAsync: rebalance, isLoading: isRebalancing, prepare: reblaancePrepare } = useRebalance(selectedPool);
     const {
@@ -30,15 +32,19 @@ export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
         isLoading: isRebalancingWithExtraMain,
         prepare: rebalanceWithExtraMainPrepare,
     } = useRebalanceWithExtraMain(selectedPool);
-    const { writeAsync: approve, isLoading: approvalLoading } = useApproveToken(mainToken || null);
-    const {
-        data: allowances,
-        refetch: refetchAllowances,
-        isLoading: allowancesLoading,
-    } = useAllowances(account || null, [mainToken]);
+    const { writeAsync: approve, isLoading: approvalLoading } = useApproveToken(
+        mainToken || null,
+        rebalancerAddress || undefined,
+    );
 
-    const mainTokenAllowance = allowances.length > 0 ? allowances[0].amountScaled : '0';
-    const needsApproval = parseFloat(mainTokenAllowance) < 1000;
+    const {
+        data: allowance,
+        isLoading: allowancesLoading,
+        refetch: refetchAllowance,
+    } = useUserTokenAllowance(mainToken);
+
+    const mainTokenAllowance = allowance ? (allowance as BigInt) : 0n;
+    const needsApproval = mainTokenAllowance < 1000n;
 
     return (
         <Modal
@@ -139,7 +145,7 @@ export function LinearPoolModal({ selectedPool, setSelectedPool }: Props) {
                                     onClick={async () => {
                                         if (account !== null && approve) {
                                             await approve();
-                                            await refetchAllowances();
+                                            await refetchAllowance();
                                         }
                                     }}
                                 >
