@@ -61,10 +61,10 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@balancer/sdk@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@balancer/sdk/-/sdk-0.0.2.tgz#980c0c5b8529f09a9593eeae3e63104e5c7874e0"
-  integrity sha512-mVrXv5pZOxply3WURlIKqPvceAj8RFYcsefAew4ZHQ7ss98ipVm9Qo00zVaDnMij2z02nbPaG+EvwmiscVlmEw==
+"@balancer/sdk@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@balancer/sdk/-/sdk-0.0.3.tgz#3579f4ab9f3b918d70bd1ac280fcf49e8bf83616"
+  integrity sha512-L2/5n5AFM2Ci4YMcHGeq7cZO0xJCDA2VPoBulTv5YgZrr1LPE37vq9pLmqdAjvyKBM6xN6nqWXEXEOfQD40Kow==
   dependencies:
     async-retry "^1.3.3"
     decimal.js-light "^2.5.1"
